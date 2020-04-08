@@ -16,6 +16,7 @@ public class Rocket : MonoBehaviour
     [SerializeField] ParticleSystem successParticles;
     [SerializeField] ParticleSystem deathParticles;
 
+
     Rigidbody rigidBody;
     AudioSource audioSource;
 
@@ -85,7 +86,7 @@ public class Rocket : MonoBehaviour
         audioSource.Stop();
         audioSource.PlayOneShot(success);
         successParticles.Play();
-        Invoke("LoadNextLevel", 1f); // parameterise time
+        Invoke("CompleteDialogueBoxEnable", 1f); // parameterise time
     }
 
     private void StartDeathSequence()
@@ -94,9 +95,18 @@ public class Rocket : MonoBehaviour
         audioSource.Stop(); 
         audioSource.PlayOneShot(death);
         deathParticles.Play();
-        Invoke("LoadFirstLevel", 1f); // parameterise time
+        Invoke("FailedDialogueBoxEnable", 1f); // parameterise time
     }
 
+    public void CompleteDialogueBoxEnable()
+    {
+        UIhandler.instance.ShowCompleteLevelDialog();
+    }
+
+    public void FailedDialogueBoxEnable()
+    {
+        UIhandler.instance.ShowFailedLevelDialog();
+    }
     public void LoadNextLevel()
     {
         int previousSceneIndex = PlayerPrefs.GetInt("LoadNextLevel");
@@ -111,10 +121,6 @@ public class Rocket : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1); // todo allow for more than 2 levels
     }
 
-    private void LoadFirstLevel()
-    {
-        SceneManager.LoadScene(0);
-    }
 
     private void RespondToThrustInput()
     {
@@ -147,21 +153,6 @@ public class Rocket : MonoBehaviour
         }
         mainEngineParticles.Play();
     }
-
-    /*private void RespondToRotateInput()
-    {
-        // todo rcsTRhrust set to 500 for this
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            RotateManually(rcsThrust * Time.deltaTime);
-        }
-        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-            RotateManually(-rcsThrust * Time.deltaTime );
-        }
-
-
-    }*/
 
 private void RespondToRotateInput ()
     { 

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Friendly
+  - dialogue
   layers:
   - Default
   - TransparentFX
