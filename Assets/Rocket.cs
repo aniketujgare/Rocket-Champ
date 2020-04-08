@@ -27,6 +27,18 @@ public class Rocket : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+
+        if (PlayerPrefs.HasKey("LoadNextLevel"))
+        {
+            // do nothing
+        }else
+            PlayerPrefs.SetInt("LoadNextLevel",0);
+        if (PlayerPrefs.HasKey("LoadNextLevelCount"))
+        {
+            //do nothing
+        }
+        else
+            PlayerPrefs.SetInt("LoadNextLevelCount", 0);
     }
 
     // Update is called once per frame
@@ -85,15 +97,18 @@ public class Rocket : MonoBehaviour
         Invoke("LoadFirstLevel", 1f); // parameterise time
     }
 
-    private void LoadNextLevel()
+    public void LoadNextLevel()
     {
+        int previousSceneIndex = PlayerPrefs.GetInt("LoadNextLevel");
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextSceneIndex = currentSceneIndex + 1;
-        if (nextSceneIndex == SceneManager.sceneCountInBuildSettings)
+        int previousLevelCount = PlayerPrefs.GetInt("LoadNextLevelCount");
+        if (currentSceneIndex > previousSceneIndex)
         {
-            nextSceneIndex = 0;
+            PlayerPrefs.SetInt("LoadNextLevel",SceneManager.GetActiveScene().buildIndex);
+            PlayerPrefs.SetInt("LoadNextLevelCount", previousLevelCount + 1);
+            print("level clered count" + PlayerPrefs.GetInt("LoadNextLevelCount"));
         }
-        SceneManager.LoadScene(nextSceneIndex); // todo allow for more than 2 levels
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1); // todo allow for more than 2 levels
     }
 
     private void LoadFirstLevel()
