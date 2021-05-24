@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7949440507436948139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7949440507436948137}
+  - component: {fileID: 7949440507436948138}
+  - component: {fileID: 7949440507436948136}
+  - component: {fileID: 1251407078400683630}
+  m_Layer: 0
+  m_Name: GameScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7949440507436948137
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7949440507436948139}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7949440507436948138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7949440507436948139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7fb810be33b164b87671e040563a86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7949440507436948136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7949440507436948139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f4abc9646bd0ec4dbcef36a76ecfaa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  launchPad: {fileID: 0}
+  orangeShip: {fileID: 8247665823169782504, guid: d427e0230fee3f9468344305c4327db5,
+    type: 3}
+  blueShip: {fileID: 8978269339529720756, guid: 22650f4b4890b134989067a072222385,
+    type: 3}
+  redShip: {fileID: 6255052012370156995, guid: a3777184c07764545baf02484e1400bd, type: 3}
+  yellowShip: {fileID: 7026869536457086276, guid: c75dab6e323f00f4298ac1b6139a61fb,
+    type: 3}
+  orangeShipFractured: {fileID: 6591001779039395174, guid: cf22915a5d6eb9d46a1f282acd541e25,
+    type: 3}
+  blueShipFractured: {fileID: 6090144170897425098, guid: 0eb818e2723412c4eb2c3dbd2a43c946,
+    type: 3}
+  redShipFractured: {fileID: 1009416539420695932, guid: 6471dcf0d6ed8fe4da32b38978eafa0e,
+    type: 3}
+  yellowShipFractured: {fileID: 478051805928635816, guid: 769423721cd98f54c8e9e3c18e127013,
+    type: 3}
+--- !u!114 &1251407078400683630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7949440507436948139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b2fd2f5f456024dad2ab62cf0a67a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Friendly: []
