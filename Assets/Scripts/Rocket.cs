@@ -66,8 +66,8 @@ public class Rocket : MonoBehaviour
     private void RespondToDebugKeys()
     {
 
-        if (Input.GetKeyDown(KeyCode.L))
-            ; //  LoadNextLevel();
+        if (Input.GetKeyDown(KeyCode.L)) ;
+        //Initiate.Fade(SceneManager.GetActiveScene().buildIndex + 1, GameAssets.i.color, 1f); //  LoadNextLevel();
         else if (Input.GetKeyDown(KeyCode.C))
             collisionsDisabled = !collisionsDisabled;   // toggle
             
