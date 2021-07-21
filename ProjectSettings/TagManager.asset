@@ -5,7 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Friendly
-  - dialogue
+  - Dissolve
+  - Move
+  - WindFan
+  - Cracker
+  - DistructionObstacles
+  - Rocket
   layers:
   - Default
   - TransparentFX
@@ -15,9 +20,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - extra light
+  - Rocket No light
+  - CamShip
   - 
   - 
   - 
