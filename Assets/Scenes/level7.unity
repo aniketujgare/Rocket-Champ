@@ -37,7 +37,11 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
+<<<<<<< HEAD
   m_Sun: {fileID: 1331678876}
+=======
+  m_Sun: {fileID: 0}
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   m_IndirectSpecularColor: {r: 0.05718045, g: 0.04818654, b: 0.029156476, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
@@ -99,8 +103,12 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: d78ad049442cd5d4b9fcbd8b4d452f54,
     type: 2}
+<<<<<<< HEAD
   m_LightingSettings: {fileID: 4890085278179872738, guid: 5b7294bff3d98074e8d38cfbbd8c1a14,
     type: 2}
+=======
+  m_UseShadowmask: 0
+>>>>>>> fdad59e (Before Integrating MAS SDK)
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1880,12 +1888,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1331678874}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
 --- !u!108 &1331678876 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 6046323497738436750, guid: e8122e6329b21ab40846887c286a7456,
     type: 3}
   m_PrefabInstance: {fileID: 1331678874}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> fdad59e (Before Integrating MAS SDK)
 --- !u!1001 &1349484193
 PrefabInstance:
   m_ObjectHideFlags: 0

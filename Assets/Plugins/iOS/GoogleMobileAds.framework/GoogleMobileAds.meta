@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Plugins/iOS/GoogleMobileAds.framework/GoogleMobileAds.meta
 guid: 61b2e35f845247c4fb945b158b498d98
+=======
+guid: ea0c4967b7168144290b29cf866d054d
+>>>>>>> fdad59e (Before Integrating MAS SDK):Assets/Plugins/iOS/GoogleAppMeasurement.framework/Modules/module.modulemap.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

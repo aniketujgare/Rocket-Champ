@@ -3,7 +3,11 @@
 --- !u!129 &1
 PlayerSettings:
   m_ObjectHideFlags: 0
+<<<<<<< HEAD
   serializedVersion: 22
+=======
+  serializedVersion: 20
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   productGUID: 9e472c417583ff94fa5dcb9abee3b1f3
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
@@ -115,8 +119,11 @@ PlayerSettings:
   switchNVNShaderPoolsGranularity: 33554432
   switchNVNDefaultPoolsGranularity: 16777216
   switchNVNOtherPoolsGranularity: 16777216
+<<<<<<< HEAD
   switchNVNMaxPublicTextureIDCount: 0
   switchNVNMaxPublicSamplerIDCount: 0
+=======
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   stadiaPresentMode: 0
   stadiaTargetFramerate: 0
   vulkanNumSwapchainBuffers: 3
@@ -149,6 +156,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.aniketujgare.rocketchamp
+<<<<<<< HEAD
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -157,6 +165,12 @@ PlayerSettings:
   AndroidBundleVersionCode: 4
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
+=======
+  buildNumber: {}
+  AndroidBundleVersionCode: 4
+  AndroidMinSdkVersion: 19
+  AndroidTargetSdkVersion: 29
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   stripEngineCode: 1
@@ -170,10 +184,17 @@ PlayerSettings:
   StripUnusedMeshComponents: 1
   VertexChannelCompressionMask: 4054
   iPhoneSdkVersion: 988
+<<<<<<< HEAD
   iOSTargetOSVersionString: 11.0
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
   tvOSTargetOSVersionString: 11.0
+=======
+  iOSTargetOSVersionString: 10.0
+  tvOSSdkVersion: 0
+  tvOSRequireExtendedGameController: 0
+  tvOSTargetOSVersionString: 10.0
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIRequiresFullScreen: 1
@@ -230,6 +251,7 @@ PlayerSettings:
   clonedFromGUID: c0afd0d1d80e3634a9dac47e8a0426ea
   templatePackageId: com.unity.template.3d@3.1.4
   templateDefaultScene: Assets/Scenes/SampleScene.unity
+<<<<<<< HEAD
   useCustomMainManifest: 0
   useCustomLauncherManifest: 0
   useCustomMainGradleTemplate: 0
@@ -237,6 +259,8 @@ PlayerSettings:
   useCustomBaseGradleTemplate: 0
   useCustomGradlePropertiesTemplate: 0
   useCustomProguardFile: 0
+=======
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   AndroidTargetArchitectures: 3
   AndroidSplashScreenScale: 2
   androidSplashScreen: {fileID: 0}
@@ -693,23 +717,34 @@ PlayerSettings:
   webGLWasmArithmeticExceptions: 0
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
+<<<<<<< HEAD
   webGLDecompressionFallback: 0
+=======
+  webGLWasmStreaming: 0
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   scriptingDefineSymbols:
     1: CROSS_PLATFORM_INPUT;UNITY_POST_PROCESSING_STACK_V2
     4: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     7: CROSS_PLATFORM_INPUT;MOBILE_INPUT;UNITY_POST_PROCESSING_STACK_V2
     13: UNITY_POST_PROCESSING_STACK_V2
+<<<<<<< HEAD
     14: MOBILE_INPUT;UNITY_POST_PROCESSING_STACK_V2
+=======
+    14: MOBILE_INPUT
+>>>>>>> fdad59e (Before Integrating MAS SDK)
     19: UNITY_POST_PROCESSING_STACK_V2
     21: UNITY_POST_PROCESSING_STACK_V2
     25: UNITY_POST_PROCESSING_STACK_V2
     27: UNITY_POST_PROCESSING_STACK_V2
     28: UNITY_POST_PROCESSING_STACK_V2
     29: UNITY_POST_PROCESSING_STACK_V2
+<<<<<<< HEAD
     30: UNITY_POST_PROCESSING_STACK_V2
     32: UNITY_POST_PROCESSING_STACK_V2
     33: UNITY_POST_PROCESSING_STACK_V2
   additionalCompilerArguments: {}
+=======
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   platformArchitecture: {}
   scriptingBackend:
     Android: 1
@@ -783,7 +818,14 @@ PlayerSettings:
   XboxOneXTitleMemory: 8
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
+<<<<<<< HEAD
   vrEditorSettings: {}
+=======
+  vrEditorSettings:
+    daydream:
+      daydreamIconForeground: {fileID: 0}
+      daydreamIconBackground: {fileID: 0}
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   cloudServicesEnabled:
     Build: 0
     Collab: 0
@@ -802,10 +844,15 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
+<<<<<<< HEAD
   activeInputHandler: 0
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
+=======
+  cloudProjectId: d87d529c-3105-4005-ae44-240266495235
+  framebufferDepthMemorylessMode: 0
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   projectName: Rocket Champ
   organizationId: aniketujgare
   cloudEnabled: 0

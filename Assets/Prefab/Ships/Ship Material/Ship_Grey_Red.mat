@@ -13,7 +13,11 @@ Material:
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
+<<<<<<< HEAD
   m_CustomRenderQueue: 2450
+=======
+  m_CustomRenderQueue: 2500
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   stringTagMap:
     RenderType: TransparentCutout
   disabledShaderPasses: []
@@ -123,7 +127,10 @@ Material:
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
     - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+<<<<<<< HEAD
   m_BuildTextureStacks: []
+=======
+>>>>>>> fdad59e (Before Integrating MAS SDK)
 --- !u!114 &2832246881207606660
 MonoBehaviour:
   m_ObjectHideFlags: 11
@@ -136,4 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   version: 4
+=======
+  version: 1
+>>>>>>> fdad59e (Before Integrating MAS SDK)

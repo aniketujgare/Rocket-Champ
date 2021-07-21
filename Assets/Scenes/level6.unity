@@ -38,7 +38,11 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+<<<<<<< HEAD
   m_IndirectSpecularColor: {r: 0.000017033939, g: 0.000000025772884, b: 0, a: 1}
+=======
+  m_IndirectSpecularColor: {r: 0.05718045, g: 0.04818654, b: 0.029156476, a: 1}
+>>>>>>> fdad59e (Before Integrating MAS SDK)
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -98,8 +102,12 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
+<<<<<<< HEAD
   m_LightingSettings: {fileID: 4890085278179872738, guid: 5b7294bff3d98074e8d38cfbbd8c1a14,
     type: 2}
+=======
+  m_UseShadowmask: 0
+>>>>>>> fdad59e (Before Integrating MAS SDK)
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2

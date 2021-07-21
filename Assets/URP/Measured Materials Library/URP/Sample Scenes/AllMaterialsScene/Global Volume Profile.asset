@@ -30,10 +30,17 @@ MonoBehaviour:
   m_AdvancedMode: 0
   postExposure:
     m_OverrideState: 1
+<<<<<<< HEAD
     m_Value: 1.89
   contrast:
     m_OverrideState: 1
     m_Value: 13.81
+=======
+    m_Value: 1.85
+  contrast:
+    m_OverrideState: 1
+    m_Value: 15.24
+>>>>>>> fdad59e (Before Integrating MAS SDK)
     min: -100
     max: 100
   colorFilter:
@@ -44,11 +51,19 @@ MonoBehaviour:
     showEyeDropper: 1
   hueShift:
     m_OverrideState: 1
+<<<<<<< HEAD
     m_Value: 0.9
+=======
+    m_Value: 1.85
+>>>>>>> fdad59e (Before Integrating MAS SDK)
     min: -180
     max: 180
   saturation:
     m_OverrideState: 1
+<<<<<<< HEAD
     m_Value: 21.52
+=======
+    m_Value: 20
+>>>>>>> fdad59e (Before Integrating MAS SDK)
     min: -100
     max: 100
