@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using admob;
+//using admob;
 
 public class InGamePanels : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class InGamePanels : MonoBehaviour
         if (instance == null)
             instance = this;
     }
+    
     void Start()
     {
         LevelNo = SceneManager.GetActiveScene().name;
@@ -42,13 +44,13 @@ public class InGamePanels : MonoBehaviour
         {
             PlayerPrefs.DeleteKey("SpinAtLevelFailed");
         }
-
+        /*
         Admob.Instance().initSDK(new AdProperties());
         Admob.Instance().loadRewardedVideo("ca-app-pub-1147416347412616/5655307978"); //testvideo ad (ca-app-pub-3940256099942544/5224354917) // realvideo ad(ca-app-pub-1147416347412616/5655307978)
         if (SaveManager.Instance.state.isvipMember==false)
         { 
         Admob.Instance().loadInterstitial("ca-app-pub-1147416347412616/4870765373"); //testinter ad (ca-app-pub-3940256099942544/1033173712) // realinter ad(ca-app-pub-1147416347412616/4870765373)
-        }
+        }*/
     }
     private void Update()
     {
@@ -113,16 +115,11 @@ public class InGamePanels : MonoBehaviour
     public void NextLevel()
     {
         int r = Random.Range(0, 2);
-        if (Admob.Instance().isInterstitialReady() && r == 1 && SaveManager.Instance.state.isvipMember == false)
+        if (Yodo1Ads.instance.isInterstitialReady() && r == 1 && SaveManager.Instance.state.isvipMember == false)
         {
-            Admob.Instance().showInterstitial();
+            Yodo1Ads.instance.showInterstitialAd();
             //Flurry Event
             EventLogExample.Instance.InterstitialShown(LevelNo);
-        }
-        else
-        {
-            if (SaveManager.Instance.state.isvipMember == false)
-                Admob.Instance().loadInterstitial("ca-app-pub-1147416347412616/4870765373"); //testinter ad (ca-app-pub-3940256099942544/1033173712) // realinter ad(ca-app-pub-1147416347412616/4870765373)
         }
         SoundManager.PlaySound(SoundManager.Sound.Button_Pop);
         //Debug.Log("Sound button is played at NextLevel");
@@ -135,19 +132,17 @@ public class InGamePanels : MonoBehaviour
     {
         Time.timeScale = 1;
         int r = Random.Range(0, 2);
-        if (Admob.Instance().isInterstitialReady() && r == 1 && SaveManager.Instance.state.isvipMember == false)
+            //Yodo1Ads.instance.showInterstitialAd();
+        
+        if (Yodo1Ads.instance.isInterstitialReady() && r == 1 && SaveManager.Instance.state.isvipMember == false)
         {
-            Admob.Instance().showInterstitial();
+            Yodo1Ads.instance.showInterstitialAd();
             //Flurry Event
             EventLogExample.Instance.InterstitialShown(LevelNo);
         }
-        else
-        {
-            if (SaveManager.Instance.state.isvipMember == false)
-                Admob.Instance().loadInterstitial("ca-app-pub-1147416347412616/4870765373"); //testinter ad (ca-app-pub-3940256099942544/1033173712) // realinter ad(ca-app-pub-1147416347412616/4870765373)
-        }
+        
         //Flurry Event
-        EventLogExample.Instance.PressedLevelReplay(LevelNo);
+       // EventLogExample.Instance.PressedLevelReplay(LevelNo);
 
         SoundManager.PlaySound(SoundManager.Sound.Button_Pop);
         //Debug.Log("Sound button is played at ReplayLevel");
@@ -158,18 +153,12 @@ public class InGamePanels : MonoBehaviour
     {
         Time.timeScale = 1;
         int r = Random.Range(0, 2);
-        if (Admob.Instance().isInterstitialReady() && r == 1 && SaveManager.Instance.state.isvipMember == false)
+        if (Yodo1Ads.instance.isInterstitialReady() && r == 1 && SaveManager.Instance.state.isvipMember == false)
         {
-            Admob.Instance().showInterstitial();
+            Yodo1Ads.instance.showInterstitialAd();
             //Flurry Event
             EventLogExample.Instance.InterstitialShown(LevelNo);
         }
-        else
-        {
-            if (SaveManager.Instance.state.isvipMember == false)
-                Admob.Instance().loadInterstitial("ca-app-pub-1147416347412616/4870765373"); //testinter ad (ca-app-pub-3940256099942544/1033173712) // realinter ad(ca-app-pub-1147416347412616/4870765373)
-        }
-
         SoundManager.PlaySound(SoundManager.Sound.Button_Pop);
         //Debug.Log("Sound button is played at BackToMain");
         Initiate.Fade(1, GameAssets.i.color, 1f);
@@ -216,18 +205,21 @@ public class InGamePanels : MonoBehaviour
     {
         //Flurry Event
         EventLogExample.Instance.PressedX4DiamondReward(LevelNo);
-        PlayerPrefs.SetInt("x4DiamondButton", 1);
-        if (!Admob.Instance().isRewardedVideoReady())
+        PlayerPrefs.SetInt("DIAMONDX4", 1);
+        
+        if (Yodo1Ads.instance.isRewardedReady())
+        {
+            Yodo1Ads.instance.showRewardedAd();
+            EventLogExample.Instance.VideoShown(LevelNo, "x4DiamondButton");
+            
+        }
+        else 
         {
             noVideoPanel.gameObject.SetActive(true);
-            Admob.Instance().loadRewardedVideo("ca-app-pub-1147416347412616/5655307978");
         }
-        else if(Admob.Instance().isRewardedVideoReady())
-        {
-            Admob.Instance().showRewardedVideo();
-            StartCoroutine(RewardCo());
-        }
+        
     } 
+    /*
     void onRewardedVideoEvent()
      {
             
@@ -243,7 +235,7 @@ public class InGamePanels : MonoBehaviour
                 EventLogExample.Instance.VideoShown(LevelNo, "x4DiamondButton");
             
     }
-    
+    */
     ///////////
     /// ///
     private bool effect = true;
@@ -260,6 +252,7 @@ public class InGamePanels : MonoBehaviour
     IEnumerator RewardCo()
     {
         yield return new WaitForSeconds(0.5f);
-        onRewardedVideoEvent();
+        //onRewardedVideoEvent();
     }
+    
 }
