@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using admob;
+///using admob;
 using UnityEngine.SceneManagement;
 
 public class AdManager : MonoBehaviour
 {
 
-    public Admob ad;
+
+    ///public Admob ad;
     string appID = "";
     string bannerID = "";
     string interstitialID = "";
     string videoID = "";
     string nativeBannerID = "";
 
-
+    /*
     void Awake()
     {
         //Replace with your IDs here. These are test ids for you to check if the ads are implemented properly or not
@@ -31,7 +32,7 @@ public class AdManager : MonoBehaviour
         videoID = "ca-app-pub-1147416347412616/5655307978";
         nativeBannerID = "ca-app-pub-3940256099942544/2247696110";
 #endif
-        AdProperties adProperties = new AdProperties();
+        ///AdProperties adProperties = new AdProperties();
         adProperties.isTesting(false);
         adProperties.isAppMuted(false);
         adProperties.isUnderAgeOfConsent(false);
@@ -49,25 +50,29 @@ public class AdManager : MonoBehaviour
         ad.initSDK(adProperties);//reqired,adProperties can been null
 
     }
+
+    */
+
     void CacheVideoAd()
-    {
+    {/*
         if (!ad.isRewardedVideoReady())
         {
             ad.loadRewardedVideo(videoID);
-        }
+        }*/
     }
 
     public bool IsAdReady()
-    {
+    {/*
 #if UNITY_EDITOR
         return false;
 #endif
         return ad.isRewardedVideoReady();
-
+        */
+        return Yodo1Ads.instance.isRewardedReady();
     }
 
     public void ShowInterstitial()
-    {
+    {/*
         //To give a call back to this use the code below
         //AdManager.Instance.ShowInterstitial();
 #if UNITY_ANDROID
@@ -91,19 +96,22 @@ public class AdManager : MonoBehaviour
             print(e);
         }
 #endif
+        */
+        Yodo1Ads.instance.showInterstitialAd();
     }
     public void ShowBanner()
     {
         //To give a call back to this use the code below
         //AdManager.Instance.ShowBanner();
-        Admob.Instance().showBannerRelative(bannerID, AdSize.SMART_BANNER, AdPosition.BOTTOM_CENTER);
+        //Admob.Instance().showBannerRelative(bannerID, AdSize.SMART_BANNER, AdPosition.BOTTOM_CENTER);
+        Yodo1Ads.instance.showBannerAd();
     }
 
     public void DestroyBanner()
     {
         //To give a call back to this use the code below
         //AdManager.Instance.DestroyBanner();
-        Admob.Instance().removeBanner();
+        Yodo1Ads.instance.dismissBanner();
     }
 
     public void ShowRewardedVideo()
@@ -111,32 +119,35 @@ public class AdManager : MonoBehaviour
         //To give a call back to this use the code below
         //AdManager.Instance.ShowRewardedVideo();
         //Debug.Log("touch video button -------------");
-        if (ad.isRewardedVideoReady())
+        if (Yodo1Ads.instance.isRewardedReady())
         {
             // Flurry Event
             //  EventLogExample.Instance.VideoShown();
-            ad.showRewardedVideo();
+            Yodo1Ads.instance.showRewardedAd(); ;
         }
+        else { }
+        /*
         else
         {
             ad.loadRewardedVideo(videoID);
         }
+        */
     }
 
     void onInterstitialEvent(string eventName, string msg)
-    {
+    {/*
         //Debug.Log("handler onAdmobEvent---" + eventName + "   " + msg);
         if (eventName == AdmobEvent.onAdLoaded)
         {
             // Admob.Instance().showInterstitial();
-        }
+        }*/
     }
     void onBannerEvent(string eventName, string msg)
     {
         //Debug.Log("handler onAdmobBannerEvent---" + eventName + "   " + msg);
     }
     void onRewardedVideoEvent(string eventName, string msg)
-    {
+    {/*
         //Debug.Log("handler onRewardedVideoEvent---" + eventName + "  rewarded: " + msg);
         if (eventName == AdmobEvent.onRewarded)
         {
@@ -153,6 +164,6 @@ public class AdManager : MonoBehaviour
             }
             EventLogExample.Instance.VideoShown(null, "x4DiamondButton");
 
-        }
+         }*/
     }
 }

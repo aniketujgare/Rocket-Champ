@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 //using admob;
 using UnityEngine.SceneManagement;
-using admob;
+//using admob;
 
 public class SpiningManager : MonoBehaviour
 {
@@ -44,8 +44,8 @@ public class SpiningManager : MonoBehaviour
 		startButton.SetActive(true);
 
 		LevelNo = SceneManager.GetActiveScene().name;
-		Admob.Instance().initSDK(new AdProperties());
-		Admob.Instance().loadRewardedVideo("ca-app-pub-1147416347412616/5655307978");
+		///Admob.Instance().initSDK(new AdProperties());
+		///Admob.Instance().loadRewardedVideo("ca-app-pub-1147416347412616/5655307978");
 
 		/*	StartCoroutine(checkInternetConnectionCo((isConnected) =>
 			{
@@ -57,7 +57,7 @@ public class SpiningManager : MonoBehaviour
 
 	// Update is called once per frame
 	private void Update()
-	{
+	{/*
 		float xRotate = CrossPlatformInputManager.GetAxis("Horizontal");
 		//internetPanel.gameObject.SetActive(false);
 		if (Admob.Instance().isRewardedVideoReady() && xRotate >= 1)
@@ -71,17 +71,17 @@ public class SpiningManager : MonoBehaviour
 		}
 		else if (!Admob.Instance().isRewardedVideoReady() && xRotate >= 1)
 		{
-			/*video is not ready*/
+			//video is not ready
 			videoNotLoadPanel.gameObject.SetActive(true);
 			Admob.Instance().loadRewardedVideo("ca-app-pub-1147416347412616/5655307978");
 		}
-
+	
 
 
 		//if (!Admob.Instance().isRewardedVideoReady()) { Admob.Instance().loadRewardedVideo("ca-app-pub-3940256099942544/5224354917"); }
 
 		UpdateDiamondText();
-
+	*/
 	}
 
 
@@ -139,34 +139,40 @@ public class SpiningManager : MonoBehaviour
 				if (winText.text == "BONUS LEVEL")
 				{
 					//Debug.Log("Play Bonus Level");
-					PlayerPrefs.SetInt("BONUSLEVEL", 1);
-					PlayerPrefs.Save();
-					Admob.Instance().showRewardedVideo();
+					if (Yodo1Ads.instance.isRewardedReady())
+					{
+						Yodo1Ads.instance.showRewardedAd();
+						bonusLvlPanel.gameObject.SetActive(true);
+					}
+
 				}
 				else if (winText.text == "DIAMONDS X8")
 				{
 					//Debug.Log("Give DIAMONDS X8");
 					PlayerPrefs.SetInt("DIAMONDX8", 1);
 					PlayerPrefs.Save();
-					Admob.Instance().showRewardedVideo();
+					if (Yodo1Ads.instance.isRewardedReady())
+						Yodo1Ads.instance.showRewardedAd();
 				}
 				else if (winText.text == "DIAMONDS X4")
 				{
 					//Debug.Log("Give DIAMONDS X4");
 					PlayerPrefs.SetInt("DIAMONDX4", 1);
 					PlayerPrefs.Save();
-					Admob.Instance().showRewardedVideo();
+					if (Yodo1Ads.instance.isRewardedReady())
+						Yodo1Ads.instance.showRewardedAd();
 				}
 				else if (winText.text == "JACKPOT")
 				{
 					//Debug.Log("Give JACKPOT");
 					PlayerPrefs.SetInt("JACKPOT", 1);
 					PlayerPrefs.Save();
-					Admob.Instance().showRewardedVideo();
+					if (Yodo1Ads.instance.isRewardedReady())
+						Yodo1Ads.instance.showRewardedAd();
 				}
 				//Flurry Event
 				EventLogExample.Instance.VideoShown(LevelNo, "Spin");
-				StartCoroutine(RewardCo());
+				//StartCoroutine(RewardCo());
 			}
 
 		}
@@ -181,6 +187,7 @@ public class SpiningManager : MonoBehaviour
 	}
 
 	//	Admob.Instance().rewardedVideoEventHandler += onRewardedVideoEvent;
+	/*
 	void onRewardedVideoEvent()
 	{
 		
@@ -222,7 +229,7 @@ public class SpiningManager : MonoBehaviour
 			}
 		
 	}
-
+	*/
 
 	/*	IEnumerator checkInternetConnectionCo(System.Action <bool> action)
 		{
@@ -238,14 +245,15 @@ public class SpiningManager : MonoBehaviour
 			}
 		}*/
 	public void PlayBonusLevel()
-    {
+	{
 		int i = Random.Range(252, 256);
 		Initiate.Fade(i, GameAssets.i.color, 1f);
 	}
-
+	/*
 	IEnumerator RewardCo()
     {
 		yield return new WaitForSeconds(0.5f);
 		onRewardedVideoEvent();
 	}
+	*/
 }

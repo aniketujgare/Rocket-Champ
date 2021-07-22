@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using admob;
 public class admobdemo : MonoBehaviour {
 	Admob ad;
@@ -128,3 +128,4 @@ public class admobdemo : MonoBehaviour {
         Debug.Log("handler onAdmobNativeBannerEvent---" + eventName + "   " + msg);
     }
 }
+*/
