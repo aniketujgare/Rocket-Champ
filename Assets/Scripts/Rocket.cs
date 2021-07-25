@@ -49,7 +49,7 @@ public class Rocket : MonoBehaviour
         //Flurry Event
         LevelNo = SceneManager.GetActiveScene().name;
         EventLogExample.Instance.LevelStart(LevelNo);
-        Yodo1Ads.instance.showInterstitialAd();
+        
     }
 
     // Update is called once per frame

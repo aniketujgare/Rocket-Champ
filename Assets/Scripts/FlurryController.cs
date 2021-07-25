@@ -3,15 +3,24 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Analytics;
+using FlurrySDK;
 
 // ------------------------------------------------------------------------
 // Name	:	CanPlay
 // Desc	:	-
+// KEY - DFGV9Z7N79WZ6SSHWNJD
 // ------------------------------------------------------------------------
 
 public class FlurryController : MonoBehaviour
 {
+#if UNITY_ANDROID
+    private string FLURRY_API_KEY = "DFGV9Z7N79WZ6SSHWNJD";
+#elif UNITY_IPHONE
+    private string FLURRY_API_KEY = "IOS_API_KEY";
+#else
+    private string FLURRY_API_KEY = null;
+#endif
+
     public enum EventID
     {
         GameFirstLaunch,//
@@ -59,12 +68,14 @@ public class FlurryController : MonoBehaviour
         InterstitialShown,//
 
         Game_Complete_Successfully,//
+        BonusLevelNo,
     }
-
+    /*
     [SerializeField]
     private string _androidApiKey = string.Empty;
     [SerializeField]
     private string _iOSApiKey = string.Empty;
+    */
     private string UserIdStr;
 
     private static Flurry FlurryInstance;
@@ -82,33 +93,27 @@ public class FlurryController : MonoBehaviour
             return _Instance;
         }
     }
-
-    void Awake()
+    private void Awake()
     {
-        Init();
-    }
-
-    // ------------------------------------------------------------------------
-    // Name	:	-
-    // Desc	:	-
-    // ------------------------------------------------------------------------
-
-    public void Init()
-    {
-        UnityEngine.Debug.Log("_androidApiKey  :  " + _androidApiKey);
-        FlurryAndroid.SetLogEnabled(true);
-
-        FlurryInstance = Flurry.Instance;
-        FlurryInstance.StartSession(string.Empty, _androidApiKey);
-        UnityEngine.Debug.Log("_androidApiKey  :  " + _androidApiKey + "string.Empty : " + string.Empty);
-
-#if UNITY_ANDROID
         UserIdStr = SystemInfo.deviceUniqueIdentifier;
-        FlurryAndroid.SetUserId(UserIdStr);
-        //if(Settings.Instance.Age >0)
-        //FlurryAndroid.SetAge(Settings.Instance.Age);
-#endif
+    }
+    void Start()
+    {
+        // Initialize Flurry.
+        new Flurry.Builder()
+                  .WithCrashReporting(true)
+                  .WithLogEnabled(true)
+                  .WithLogLevel(Flurry.LogLevel.VERBOSE)
+                  .WithMessaging(true)               
+                  .Build(FLURRY_API_KEY);
 
+        // Log Flurry events.
+        Flurry.EventRecordStatus status = Flurry.LogEvent("Unity Event");
+
+        
+
+        Flurry.UserProperties.Set("UserId", UserIdStr);
+        UnityEngine.Debug.Log("Log Unity Event status: " + status);
         //Flurry event
         string prefStr = FlurryController.EventID.GameFirstLaunch.ToString();
         if (PlayerPrefs.GetInt(prefStr, 0) == 0)
@@ -116,8 +121,12 @@ public class FlurryController : MonoBehaviour
             FlurryController.Instance.PostEvent(FlurryController.EventID.GameFirstLaunch, true, "name", GetPlayerProfileName());
             PlayerPrefs.SetInt(prefStr, 1);
         }
-        //		FlurryController.Instance.PostEvent(FlurryController.EventID.GameFirstLaunch);
+
     }
+    // ------------------------------------------------------------------------
+    // Name	:	-
+    // Desc	:	-
+    // ------------------------------------------------------------------------
 
     public string GetPlayerProfileName()
     {
@@ -168,7 +177,9 @@ public class FlurryController : MonoBehaviour
         }
 
         if (canPost)
-            FlurryInstance.LogEvent(eId.ToString()).ToString();
+            Flurry.LogEvent(eId.ToString()).ToString();
+        //FlurryInstance.LogEvent(eId.ToString()).ToString();
+
     }
 
     // ------------------------------------------------------------------------
@@ -202,7 +213,7 @@ public class FlurryController : MonoBehaviour
                 paramsDict.Add(paramsArray[i], paramsArray[i + 1]);
             }
 
-            string successStr = FlurryInstance.LogEvent(eId.ToString(), paramsDict).ToString();
+           string successStr = Flurry.LogEvent(eId.ToString(), paramsDict).ToString();
 
             UnityEngine.Debug.Log("Flurry event status : " + eId + " : " + successStr);
 
@@ -210,4 +221,5 @@ public class FlurryController : MonoBehaviour
                 UnityEngine.Debug.Log(item.Key + " , " + item.Value);
         }
     }
+
 }

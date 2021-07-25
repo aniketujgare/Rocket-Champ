@@ -9,13 +9,13 @@ public class AdManager : MonoBehaviour
 
 
     ///public Admob ad;
+    /*
     string appID = "";
     string bannerID = "";
     string interstitialID = "";
     string videoID = "";
     string nativeBannerID = "";
 
-    /*
     void Awake()
     {
         //Replace with your IDs here. These are test ids for you to check if the ads are implemented properly or not
