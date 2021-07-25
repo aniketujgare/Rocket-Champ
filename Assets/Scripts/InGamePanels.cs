@@ -114,8 +114,8 @@ public class InGamePanels : MonoBehaviour
     //Buttons On Panel
     public void NextLevel()
     {
-        int r = Random.Range(0, 2);
-        if (Yodo1Ads.instance.isInterstitialReady() && r == 1 && SaveManager.Instance.state.isvipMember == false)
+        //int r = Random.Range(0, 2);
+        if (Yodo1Ads.instance.isInterstitialReady() && SaveManager.Instance.state.isvipMember == false)
         {
             Yodo1Ads.instance.showInterstitialAd();
             //Flurry Event
@@ -131,7 +131,7 @@ public class InGamePanels : MonoBehaviour
     public void ReplayLevel()
     {
         Time.timeScale = 1;
-        int r = Random.Range(0, 2);
+        int r = Random.Range(0, 5);
             //Yodo1Ads.instance.showInterstitialAd();
         
         if (Yodo1Ads.instance.isInterstitialReady() && r == 1 && SaveManager.Instance.state.isvipMember == false)
@@ -142,7 +142,8 @@ public class InGamePanels : MonoBehaviour
         }
         
         //Flurry Event
-       // EventLogExample.Instance.PressedLevelReplay(LevelNo);
+        EventLogExample.Instance.PressedLevelReplay(LevelNo);
+       
 
         SoundManager.PlaySound(SoundManager.Sound.Button_Pop);
         //Debug.Log("Sound button is played at ReplayLevel");

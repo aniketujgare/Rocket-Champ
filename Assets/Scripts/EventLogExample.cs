@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using FlurrySDK;
 public class EventLogExample : MonoBehaviour
 {
 
@@ -27,6 +27,8 @@ public class EventLogExample : MonoBehaviour
     public void PressedSpinAndWin(string LevelNO)
     {
         FlurryController.Instance.PostEvent(FlurryController.EventID.SpinAndWin, false,"Spinned At", LevelNO);
+        
+        
     }
     public void UnlockedShipSkin(int index,int cost)
     {
@@ -51,7 +53,7 @@ public class EventLogExample : MonoBehaviour
     }
     public void PressedLevelReplay(string LevelNo)
     {
-        FlurryController.Instance.PostEvent(FlurryController.EventID.LevelReplay, false, "LevelReplay", LevelNo);
+        FlurryController.Instance.PostEvent(FlurryController.EventID.LevelLoss, false, "LevelReplay", LevelNo);
     }
     public void PressedX4DiamondReward(string LevelNo)
     {
@@ -74,4 +76,9 @@ public class EventLogExample : MonoBehaviour
     {
         FlurryController.Instance.PostEvent(FlurryController.EventID.DiamondCollected, false,"In Level",LevelNo);
     }
+    public void BonusLevelPlayed(string LevelNo)
+    {
+        FlurryController.Instance.PostEvent(FlurryController.EventID.BonusLevelNo, false, "Bonus Level", LevelNo);
+    }
+
 }

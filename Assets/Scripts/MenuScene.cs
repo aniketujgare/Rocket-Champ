@@ -313,7 +313,7 @@ public class MenuScene : MonoBehaviour
             //Debug.Log("Sound button is played at OnShip Buy Set");
             setShip(selectedShipIndex);
             //FLurry Event
-           // EventLogExample.Instance.SelectedShipSkin(selectedShipIndex);
+            EventLogExample.Instance.SelectedShipSkin(selectedShipIndex);
         }
         else
         {
