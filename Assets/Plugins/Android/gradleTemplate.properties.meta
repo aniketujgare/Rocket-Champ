@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Plugins/Android/gradleTemplate.properties.meta
 guid: 8735fe91238b6a348a8be269b0d5d687
+=======
+guid: 527d23e9c87854edc99f6680c8f04ec1
+>>>>>>> master:Assets/Plugins/FlurrySDK/LICENSE.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
