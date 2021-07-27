@@ -169,9 +169,14 @@ PlayerSettings:
   buildNumber: {}
   AndroidBundleVersionCode: 5
   AndroidMinSdkVersion: 19
+<<<<<<< HEAD
   AndroidTargetSdkVersion: 29
 >>>>>>> fdad59e (Before Integrating MAS SDK)
   AndroidPreferredInstallLocation: 1
+=======
+  AndroidTargetSdkVersion: 30
+  AndroidPreferredInstallLocation: 0
+>>>>>>> 77d207c... Play Billing V3 and Android 11 Support
   aotOptions: 
   stripEngineCode: 1
   iPhoneStrippingLevel: 0
