@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-﻿{
-=======
 {
->>>>>>> 0568e12... MAS SDK Confiigured
   "version": "1.0",
   "components": [ 
     "Microsoft.VisualStudio.Workload.ManagedGame"

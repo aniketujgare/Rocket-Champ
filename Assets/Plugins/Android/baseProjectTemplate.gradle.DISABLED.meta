@@ -1,13 +1,9 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Assets/Plugins/iOS/GoogleMobileAds.framework/GoogleMobileAds.meta
-<<<<<<< HEAD:Assets/Plugins/iOS/GoogleMobileAds.framework/GoogleMobileAds.meta
-guid: 61b2e35f845247c4fb945b158b498d98
-=======
-guid: ea0c4967b7168144290b29cf866d054d
->>>>>>> fdad59e (Before Integrating MAS SDK):Assets/Plugins/iOS/GoogleAppMeasurement.framework/Modules/module.modulemap.meta
-=======
+<<<<<<< HEAD:Assets/Plugins/Android/baseProjectTemplate.gradle.DISABLED.meta
 guid: 70eb0e20d3fc57e4cbe0b2bf82c2d8fd
->>>>>>> 0568e12... MAS SDK Confiigured:Assets/Plugins/Android/baseProjectTemplate.gradle.DISABLED.meta
+=======
+guid: 781805bd91b829b4ab76bdc75c3189a1
+>>>>>>> master:Assets/Plugins/Android/mainTemplate.gradle.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
