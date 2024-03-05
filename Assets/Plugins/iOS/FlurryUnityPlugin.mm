@@ -14,378 +14,272 @@
  * limitations under the License.
  */
 
+#import "FlurryUnityWrapper.h"
 #import "FlurryUnityPlugin.h"
-#import "Flurry.h"
-#import "FlurryCCPA.h"
-#import "FlurryUserProperties.h"
-
-#if __has_include("FlurryMessaging.h")
-#import "FlurryMessaging.h"
-#endif
-
-#if __has_include(<StoreKit/SKAdNetwork.h>)
-#import "FlurrySKAdNetwork.h"
-#endif
 
 @implementation FlurryUnityPlugin
 
-static FlurryUnityPlugin *_sharedInstance;
-
-+ (FlurryUnityPlugin*) shared
-{
-    static dispatch_once_t once;
-    static id _sharedInstance;
-    dispatch_once(&once, ^{
-        NSLog(@"Creating FlurryUnityPlugin shared instance");
-        _sharedInstance = [[FlurryUnityPlugin alloc] init];
-    });
-    return _sharedInstance;
-}
-
--(id)init {
-    self = [super init];
-    return self;
-}
-
-- (void) setupFlurryAutoMessaging {
-    #if __has_include("FlurryMessaging.h")
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [FlurryMessaging setAutoIntegrationForMessaging];
-        FlurryUnityPlugin* sharedInstance = [FlurryUnityPlugin shared];
-        [FlurryMessaging setMessagingDelegate: (id <FlurryMessagingDelegate>)  sharedInstance];
-    });
-    #endif
-}
-
-- (void) flurrySessionDidCreateWithInfo:  (NSDictionary *)  info
-{
-    NSLog(@"Flurry session started");
-    
-    NSString* originName = @"unity-flurry-sdk";
-    
-    #if __has_include("FlurryMessaging.h")
-    NSString* originVersion = @"3.4.0.messaging";
-    #else
-    NSString* originVersion = @"3.4.0";
-    #endif
-    
-    
-    [Flurry addOrigin:originName withVersion:originVersion];
-    
-    //For use in testing Flurry push
-    //NSString *idfv = UIDevice.currentDevice.identifierForVendor.UUIDString;
-    //NSLog(@"IDFV = %@", idfv);
-    
-};
-
-#if __has_include("FlurryMessaging.h")
--(void) didReceiveMessage:(nonnull FlurryMessage*)message {
-    NSLog(@"didReceiveMessage = %@", [message description]);
-    //App specific implementation
-    
-}
-
-// delegate method when a notification action is performed
--(void) didReceiveActionWithIdentifier:(nullable NSString*)identifier message:(nonnull FlurryMessage*)message {
-    NSLog(@"didReceiveAction %@ , Message = %@",identifier, [message description]);
-    //Any app specific logic goes here.
-    //Ex: Deeplink logic. See Flurry Push sample App (loading of viewControllers (nibs or storboards))
-    
-}
-#endif
-
-NSString* strToNSStr(const char* str)
-{
-    if (!str)
-        return [NSString stringWithUTF8String: ""];
-    
-    return [NSString stringWithUTF8String: str];
-}
-
-char* strDup(const char* str)
-{
-    if (!str)
-        return NULL;
-    
-    return strcpy((char*)malloc(strlen(str) + 1), str);
-    
-}
-
-NSMutableDictionary* keyValueToDict(const char* keys, const char* values)
-{
-    if (!keys || !values)
-    {
-        return nil;
-    }
-    
-    NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-    
-    NSArray* keysArray = [strToNSStr(keys) componentsSeparatedByString : @"\n"];
-    NSArray* valuesArray = [strToNSStr(values) componentsSeparatedByString : @"\n"];
-    
-    for (int i = 0; i < [keysArray count]; i++)
-    {
-        [dict setObject:[valuesArray objectAtIndex: i] forKey:[keysArray objectAtIndex: i]];
-    }
-    
-    return dict;
-}
-
-NSArray* cStringToArray(const char* values) {
-    if (!values) {
-        return nil;
-    }
-    
-    NSArray* valuesArray = [strToNSStr(values) componentsSeparatedByString : @"\n"];
-    
-    return valuesArray;
-}
-
 extern "C" {
     
-    FlurrySessionBuilder* builder;
-    bool FlurryLogEnabled = true;
-    
     const void initializeFlurrySessionBuilder() {
-        builder = [FlurrySessionBuilder new];
-        FlurryUnityPlugin* sharedInstance = [FlurryUnityPlugin shared];
-        [Flurry setDelegate: (id <FlurryDelegate>)  sharedInstance];
+        [[FlurryUnityWrapper shared] initializeFlurrySessionBuilder];
     }
     
     const void flurryWithCrashReporting(bool crashReporting){
-        [builder withCrashReporting: crashReporting];
+        [[FlurryUnityWrapper shared] flurryWithCrashReporting:crashReporting];
     }
     
     const void flurryWithDataSaleOptOut(bool isOptOut){
-        [builder withDataSaleOptOut: isOptOut];
+        [[FlurryUnityWrapper shared] flurryWithDataSaleOptOut:isOptOut];
     }
     
     const void flurryWithLogLevel(int logLevel){
-        
-        if (FlurryLogEnabled) {
-            if (logLevel == 2) {
-                [builder withLogLevel: FlurryLogLevelAll];
-            } else if (logLevel == 3 || logLevel == 4 || logLevel == 5) {
-                [builder withLogLevel: FlurryLogLevelDebug];
-            } else {
-                [builder withLogLevel: FlurryLogLevelCriticalOnly]; //default
-            }
-        }
-        
+        [[FlurryUnityWrapper shared] flurryWithLogLevel:logLevel];
     }
     
     const void flurryWithLogEnabled(bool logEnabled){
-        if (logEnabled == false) {
-            [builder withLogLevel: FlurryLogLevelNone];
-            FlurryLogEnabled = false;
-        } else {
-            FlurryLogEnabled = true;
-        }
+        [[FlurryUnityWrapper shared] flurryWithLogEnabled:logEnabled];
     }
     
     const void flurryWithSessionContinueSeconds(long seconds){
-        [builder withSessionContinueSeconds: seconds];
+        [[FlurryUnityWrapper shared] flurryWithSessionContinueSeconds:seconds];
     }
     
     const void flurryWithIncludeBackgroundSessionsInMetrics(bool includeBackgroundSessionsInMetrics){
-        [builder withIncludeBackgroundSessionsInMetrics: includeBackgroundSessionsInMetrics];
+        [[FlurryUnityWrapper shared] flurryWithIncludeBackgroundSessionsInMetrics:includeBackgroundSessionsInMetrics];
     }
     
     const void flurryWithAppVersion(const char *appVersion){
-        NSString *appVersionStr = strToNSStr(appVersion);
-        [builder withAppVersion: appVersionStr];
+        [[FlurryUnityWrapper shared] flurryWithAppVersion:appVersion];
     }
     
     const void flurryStartSessionWithSessionBuilder(const char *apiKey){
-        NSString *apiKeyStr = strToNSStr(apiKey);
-        if (![Flurry activeSessionExists]) {
-            [Flurry startSession:apiKeyStr withSessionBuilder:builder];
-        }
+        [[FlurryUnityWrapper shared] flurryStartSessionWithSessionBuilder:apiKey];
     }
     
     const void flurrySetupMessagingWithAutoIntegration() {
-        FlurryUnityPlugin* sharedInstance = [FlurryUnityPlugin shared];
-        [sharedInstance setupFlurryAutoMessaging];
+        [[FlurryUnityWrapper shared] flurrySetupMessagingWithAutoIntegration];
     }
     
     const void flurrySetDataSaleOptOut(bool isOptOut){
-        [FlurryCCPA setDataSaleOptOut: isOptOut];
+        [[FlurryUnityWrapper shared] flurrySetDataSaleOptOut:isOptOut];
     }
     
     const void flurrySetDelete(){
-        [FlurryCCPA setDelete];
+        [[FlurryUnityWrapper shared] flurrySetDelete];
     }
     
     const int flurryLogEvent(const char *eventName){
-        NSString *eventNameStr=strToNSStr(eventName);
-        return [Flurry logEvent:eventNameStr];
+        [[FlurryUnityWrapper shared] flurryLogEvent:eventName];
     }
     
     const int flurryLogEventWithParameter(const char* eventName, const char* keys, const char* values){
-        NSString *eventNameStr=strToNSStr(eventName);
-        return [Flurry logEvent: eventNameStr withParameters:keyValueToDict(keys,values)];
+        return [[FlurryUnityWrapper shared] flurryLogEvent:eventName keys:keys values:values];
     }
     
     const int flurryLogTimedEventWithParams(const char* eventName, const char* keys, const char* values, bool isTimed) {
-        NSString *eventNameStr=strToNSStr(eventName);
-        return [Flurry logEvent:eventNameStr withParameters:keyValueToDict(keys,values) timed:isTimed];
+        return [[FlurryUnityWrapper shared] flurryLogTimedEvent:eventName keys:keys values:values isTimed:isTimed];
     }
     
+    const int flurryLogStandardEventWithParameter(const char* eventName, const char* keys, const char* values){
+        return [[FlurryUnityWrapper shared] flurryLogStandardEvent:eventName keys:keys values:values];
+    }
     const void flurrySetUserId(const char* userId) {
-        NSString *userIdStr = strToNSStr(userId);
-        [Flurry setUserID:userIdStr];
+        [[FlurryUnityWrapper shared] flurrySetUserId:userId];
+    }
+
+    const void flurrySetSessionContinueSeconds(long seconds){
+        [[FlurryUnityWrapper shared] flurrySetSessionContinueSeconds:seconds];
+    }
+
+    const void flurrySetIncludeBackgroundSessionsInMetrics(bool includeBackgroundSessionsInMetrics) {
+        [[FlurryUnityWrapper shared] flurrySetIncludeBackgroundSessionsInMetrics:includeBackgroundSessionsInMetrics];
     }
     
     const void flurrySetAge(const int age) {
-        [Flurry setAge:age];
+        [[FlurryUnityWrapper shared] flurrySetAge:age];
     }
     
     const void flurrySetGender(const char* gender) {
-        NSString *genderStr = strToNSStr(gender);
-        [Flurry setGender:genderStr];
+        [[FlurryUnityWrapper shared] flurrySetGender:gender];
     }
     
     const void flurryLogPageView() {
-       // [Flurry logPageView];
         NSLog(@"[Flurry logPageView] is removed in Flurry 11.0.0");
     }
     
     
     const void flurryLogError(const char* errorId, const char* message, const char* errorClass) {
-        [Flurry logError:strToNSStr(errorId) message:strToNSStr(message) exception:[[NSException alloc] initWithName:strToNSStr(errorClass) reason:@"" userInfo:nil] withParameters: nil];
+        [[FlurryUnityWrapper shared] flurryLogError:errorId message:message errorClass:errorClass];
     }
     
     const void flurryLogErrorWithParams(const char* errorId, const char* message, const char* errorClass, const char* keys, const char* values) {
-        
-        [Flurry logError:strToNSStr(errorId) message:strToNSStr(message) exception:[[NSException alloc] initWithName:strToNSStr(errorClass) reason:@"" userInfo:nil] withParameters: keyValueToDict(keys,values)];
+        [[FlurryUnityWrapper shared] flurryLogError:errorId message:message errorClass:errorClass keys:keys values:values];
     }
     
     const void flurryAddOrigin(const char* originName, const char* originVersion) {
-        NSString *originNameStr = strToNSStr(originName);
-        NSString *originVersionStr = strToNSStr(originVersion);
-        
-        [Flurry addOrigin:originNameStr withVersion:originVersionStr];
+        [[FlurryUnityWrapper shared] flurryAddOrigin:originName originVersion:originVersion];
     }
     
     const void flurrySetSessionOrigin(const char* originName, const char* deepLink) {
-        NSString *originNameStr = strToNSStr(originName);
-        NSString *deepLinkStr = strToNSStr(deepLink);
-        
-        [Flurry addSessionOrigin:originNameStr withDeepLink:deepLinkStr];
+        [[FlurryUnityWrapper shared] flurrySetSessionOrigin:originName deepLink:deepLink];
     }
     
     const void flurrySetVersionName(const char* versionName) {
-        NSLog(@"SetVersionName is removed from the Flurry SDK. Use WithAppVersion in the session builder instead.");
+        [[FlurryUnityWrapper shared] flurrySetVersionName:versionName];
     }
     
     const void flurryAddSessionProperty(const char* name, const char* value) {
-        
-        [Flurry sessionProperties: keyValueToDict(name, value)];
+        [[FlurryUnityWrapper shared] flurryAddSessionProperty:name value:value];
     }
     
     
     const void flurryAddOriginWithParams(const char* originName,const char* originVersion,const char* keys,const char* values){
-        
-        NSString *originNameStr = strToNSStr(originName);
-        NSString *originVersionStr = strToNSStr(originVersion);
-        
-        [Flurry addOrigin: originNameStr withVersion: originVersionStr withParameters: keyValueToDict(keys,values)];
+        [[FlurryUnityWrapper shared] flurryAddOrigin:originName originVersion:originVersion keys:keys values:values];
     }
     
     const char* flurryGetAgentVersion()
     {
-        return strDup([[Flurry getFlurryAgentVersion] UTF8String]);
+        return [[FlurryUnityWrapper shared] flurryGetAgentVersion];
     }
     
     const char* flurryGetReleaseVersion()
     {
-        return strDup([[Flurry getFlurryAgentVersion] UTF8String]);
+        return [[FlurryUnityWrapper shared] flurryGetReleaseVersion];
     }
     
     const char* flurryGetSessionId()
     {
-        return strDup([[Flurry getSessionID] UTF8String]);
+        return [[FlurryUnityWrapper shared] flurryGetSessionId];
     }
     
-    const void flurryLogTimedEvent(const char* eventId, bool isTimed) {
-        NSString *eventIdStr = strToNSStr(eventId);
-        [Flurry logEvent:eventIdStr withParameters:nil timed:isTimed];
+    const int flurryLogTimedEvent(const char* eventId, bool isTimed) {
+        return [[FlurryUnityWrapper shared] flurryLogTimedEvent:eventId isTimed:isTimed];
     }
     
     const void flurryEndTimedEvent(const char* eventName) {
-        NSString *eventNameStr = strToNSStr(eventName);
-        [Flurry endTimedEvent:eventNameStr withParameters:nil];
+        [[FlurryUnityWrapper shared] flurryEndTimedEvent:eventName];
     }
     
     const void flurryEndTimedEventWithParams(const char* eventName, const char* keys,const char* values) {
-        
-        NSString *eventNameStr = strToNSStr(eventName);
-        
-        [Flurry endTimedEvent:eventNameStr withParameters:keyValueToDict(keys,values)];
+        [[FlurryUnityWrapper shared] flurryEndTimedEvent:eventName keys:keys values:values];
     }
     
     const void flurryLogBreadcrumb(const char* crashBreadcrumb){
+        [[FlurryUnityWrapper shared] flurryLogBreadcrumb:crashBreadcrumb];
+    }
+
+    const void flurryLogPayment(const char* productName, const char* productId, const int quantity, const double price, const char* currency, const char* transactionId, const char* keys, const char* values) {
         
-        
-        NSString *crashBreadcrumbStr = strToNSStr(crashBreadcrumb);
-        
-        [Flurry leaveBreadcrumb:crashBreadcrumbStr];
+        [[FlurryUnityWrapper shared] flurryLogPayment:productName productId:productId quantity:quantity price:price currency:currency transactionId:transactionId keys:keys values:values];
     }
     
     const void flurrySetIAPReportingEnabled(bool enableIAP){
-        [Flurry setIAPReportingEnabled: enableIAP];
+        [[FlurryUnityWrapper shared] flurrySetIAPReportingEnabled:enableIAP];
     }
     
     const void flurryOpenPrivacyDashboard(){
-        [Flurry openPrivacyDashboard:^(BOOL success) {
-            NSLog(@"Flurry privacy dashboard opened successfully.");
-        }];
+        [[FlurryUnityWrapper shared] flurryOpenPrivacyDashboard];
     }
     
     const void flurryUpdateConversionValue(int conversionValue){
         if (@available(iOS 14.0, *)) {
-            [FlurrySKAdNetwork flurryUpdateConversionValue: conversionValue];
+            [[FlurryUnityWrapper shared] flurryUpdateConversionValue:conversionValue];
         }
     }
     
     const void flurryUpdateConversionValueWithEvent(int flurryEvent){
         if (@available(iOS 14.0, *)) {
-            [FlurrySKAdNetwork flurryUpdateConversionValueWithEvent:(FlurryConversionValueEventType) flurryEvent];
+            [[FlurryUnityWrapper shared] flurryUpdateConversionValueWithEvent:flurryEvent];
         }
     }
     
     const void flurrySetUserPropertyValues(const char* propertyName, const char* values){
-        [FlurryUserProperties set:strToNSStr(propertyName) values:cStringToArray(values)];
+        [[FlurryUnityWrapper shared] flurrySetUserProperty:propertyName  values:values];
     }
     
     const void flurrySetUserPropertyValue(const char* propertyName, const char* value){
-        [FlurryUserProperties set:strToNSStr(propertyName) value:strToNSStr(value)];
+        [[FlurryUnityWrapper shared] flurrySetUserProperty:propertyName  value:value];
     }
     
     const void flurryAddUserPropertyValues(const char* propertyName, const char* values){
-        [FlurryUserProperties add:strToNSStr(propertyName) values:cStringToArray(values)];
+        [[FlurryUnityWrapper shared] flurryAddUserProperty:propertyName  values:values];
     }
     
     const void flurryAddUserPropertyValue(const char* propertyName, const char* value){
-        [FlurryUserProperties add:strToNSStr(propertyName) value:strToNSStr(value)];
+        [[FlurryUnityWrapper shared] flurryAddUserProperty:propertyName  value:value];
     }
     
     const void flurryRemoveUserPropertyValues(const char* propertyName, const char* values){
-        [FlurryUserProperties remove:strToNSStr(propertyName) values:cStringToArray(values)];
+        [[FlurryUnityWrapper shared] flurryRemoveUserProperty:propertyName  values:values];
     }
     
     const void flurryRemoveUserPropertyValue(const char* propertyName, const char* value){
-        [FlurryUserProperties remove:strToNSStr(propertyName) value:strToNSStr(value)];
+        [[FlurryUnityWrapper shared] flurryRemoveUserProperty:propertyName  value:value];
     }
     
     const void flurryRemoveUserProperty(const char* propertyName){
-        [FlurryUserProperties remove:strToNSStr(propertyName)];
+        [[FlurryUnityWrapper shared] flurryRemoveUserProperty:propertyName];
     }
     
     const void flurryFlagUserProperty(const char* propertyName){
-        [FlurryUserProperties flag:strToNSStr(propertyName)];
+        [[FlurryUnityWrapper shared] flurryFlagUserProperty:propertyName];
+    }
+    
+    const void flurryFetchPublisherSegmentation(){
+        [[FlurryUnityWrapper shared] flurryFetchPublisherSegmentation];
+    }
+    
+    const void flurrySetPublisherSegmentationListener(){
+        [[FlurryUnityWrapper shared] flurrySetPublisherSegmentationListener];
+    }
+    
+    const char* flurryGetPublisherData(){
+        return [[FlurryUnityWrapper shared] flurryGetPublisherData];
+    }
+    
+    const void flurryRegisterOnPSFetchedCallback(OnPSFetched handler){
+        [[FlurryUnityWrapper shared] flurryRegisterOnPSFetchedCallback:handler];
+    }
+    
+    // TODO: Deprecated, and need to remove for next GA release
+    const void flurryRegisterOnFetchedCallback(OnFetched handler)
+    {
+        [[FlurryUnityWrapper shared] flurryRegisterOnFetchedCallback:handler];
+    }
+    
+    const void flurrySetConfigListener(){
+        [[FlurryUnityWrapper shared] flurrySetConfigListener];
+    }
+    
+    const void flurryRegisterConfigCallback(OnConfigFetched handler1, OnConfigFetchNoChange handler2, OnConfigFetchFailed handler3, OnConfigActivated handler4){
+        
+        [[FlurryUnityWrapper shared] flurryRegisterConfigCallback1:handler1 callback2:handler2 callback3:handler3 callback4:handler4];
+
+    }
+    
+    const void flurryConfigFetch(){
+        [[FlurryUnityWrapper shared] flurryConfigFetch];
+    }
+    
+    const void flurryConfigActivate(){
+        [[FlurryUnityWrapper shared] flurryConfigActivate];
+    }
+    
+    const char* flurryConfigGetString(const char* key, const char* defaultValue){
+        return [[FlurryUnityWrapper shared] flurryConfigGetString:key defaultValue:defaultValue];
+        
+    }
+    
+    const void flurryRegisterMessagingCallback(OnNotificationReceived handler1, OnNotificationClicked handler2){
+#if __has_include("FlurryMessaging.h")
+        [[FlurryUnityWrapper shared] flurryRegisterMessagingCallback1:handler1 callback2:handler2];
+#endif
+        
     }
 }
 
 @end
+
+
+

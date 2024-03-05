@@ -15,11 +15,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "Flurry.h"
 
 @interface FlurryUnityPlugin : NSObject
-
-+ (FlurryUnityPlugin*) shared;
-- (void) setupFlurryAutoMessaging;
 
 @end
