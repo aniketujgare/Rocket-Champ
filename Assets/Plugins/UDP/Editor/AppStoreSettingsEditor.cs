@@ -1531,7 +1531,7 @@ namespace UnityEngine.UDP.Editor
 
                     if (GUILayout.Button("Go to UDP console", GUILayout.Width(AppStoreStyles.kGoToPortalButtonWidth)))
                     {
-                        Application.OpenURL(BuildConfig.CONSOLE_URL);
+                        Application.OpenURL(BuildConfig.UDP_ENDPOINT);
                     }
 
                     EditorGUILayout.EndHorizontal();

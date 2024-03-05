@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace Yodo1.MAS
 {
@@ -57,7 +55,7 @@ namespace Yodo1.MAS
             errorDic.Add("code", Code);
             errorDic.Add("message", Message);
 
-            return errorDic.ToString();
+            return Yodo1JSON.Serialize(errorDic);
         }
     }
 }

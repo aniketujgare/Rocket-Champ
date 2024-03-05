@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Yodo1.MAS;
@@ -7,6 +8,8 @@ public class Yodo1Ads : MonoBehaviour
 {
     public static Yodo1Ads instance = null;
     bool isBannerShown = false;
+    Yodo1U3dBannerAdView bannerAdView = null;
+    private int retryAttempt = 0;
     // Start is called before the first frame update
     void Awake()
     {
@@ -23,50 +26,95 @@ public class Yodo1Ads : MonoBehaviour
     }
     void Start()
     {
-        Yodo1U3dMas.InitializeSdk();
+        Yodo1U3dMas.InitializeMasSdk();
+        bannerAdView = new Yodo1U3dBannerAdView(Yodo1U3dBannerAdSize.Banner, Yodo1U3dBannerAdPosition.BannerTop | Yodo1U3dBannerAdPosition.BannerHorizontalCenter);
+        // LoadBannerAd();
 
+        SetupEventCallbacks();
+      //  LoadInterstitialAd();
+
+        SetupEventCallbacksReward();
+       // LoadRewardAd();
+    }
+
+
+    private void LoadBannerAd()
+    {
+   
+        bannerAdView.LoadAd();
     }
     // Banner
 
-    public bool isBannerReady()
-    {
-        bool isLoaded = Yodo1U3dMas.IsBannerAdLoaded();
-        return isLoaded;
-    }
-
+  
     public void showBannerAd()
     {
-        if (Yodo1U3dMas.IsBannerAdLoaded())
-        {
-            int align = Yodo1U3dBannerAlign.BannerTop | Yodo1U3dBannerAlign.BannerHorizontalCenter;
-            Yodo1U3dMas.ShowBannerAd(align);
-            SetDelegates();
-        }
-        else
-        {
-            Debug.Log("[Yodo1 Mas] Banner ad has not been cached.");
-        }
+        bannerAdView.Show();
     }
     public void dismissBanner()
     {
-        Yodo1U3dMas.DismissBannerAd();
-        SetDelegates();
+        bannerAdView.Destroy();
+        
+       
     }
 
     // Interstital
+    private void SetupEventCallbacks()
+    {
+        Yodo1U3dInterstitialAd.GetInstance().OnAdLoadedEvent += OnInterstitialAdLoadedEvent;
+        Yodo1U3dInterstitialAd.GetInstance().OnAdLoadFailedEvent += OnInterstitialAdLoadFailedEvent;
+        Yodo1U3dInterstitialAd.GetInstance().OnAdOpenedEvent += OnInterstitialAdOpenedEvent;
+        Yodo1U3dInterstitialAd.GetInstance().OnAdOpenFailedEvent += OnInterstitialAdOpenFailedEvent;
+        Yodo1U3dInterstitialAd.GetInstance().OnAdClosedEvent += OnInterstitialAdClosedEvent;
+    }
 
+    private void LoadInterstitialAd()
+    {
+        Yodo1U3dInterstitialAd.GetInstance().LoadAd();
+    }
+
+    private void OnInterstitialAdLoadedEvent(Yodo1U3dInterstitialAd ad)
+    {
+        // Code to be executed when an ad finishes loading.
+        retryAttempt = 0;
+        Yodo1U3dInterstitialAd.GetInstance().ShowAd();
+    }
+
+    private void OnInterstitialAdLoadFailedEvent(Yodo1U3dInterstitialAd ad, Yodo1U3dAdError adError)
+    {
+        // Code to be executed when an ad request fails.
+        retryAttempt++;
+        double retryDelay = System.Math.Pow(2, Math.Min(6, retryAttempt));
+        Invoke("LoadInterstitialAd", (float)retryDelay);
+    }
+
+    private void OnInterstitialAdOpenedEvent(Yodo1U3dInterstitialAd ad)
+    {
+        // Code to be executed when an ad opened
+    }
+
+    private void OnInterstitialAdOpenFailedEvent(Yodo1U3dInterstitialAd ad, Yodo1U3dAdError adError)
+    {
+        // Code to be executed when an ad open fails.
+        LoadInterstitialAd();
+    }
+
+    private void OnInterstitialAdClosedEvent(Yodo1U3dInterstitialAd ad)
+    {
+        // Code to be executed when the ad closed
+        LoadInterstitialAd();
+    }
     public bool isInterstitialReady()
     {
-        bool isLoaded = Yodo1U3dMas.IsInterstitialAdLoaded();
+        bool isLoaded = Yodo1U3dInterstitialAd.GetInstance().IsLoaded();
         return isLoaded;
     }
 
     public void showInterstitialAd()
     {
-        if (Yodo1U3dMas.IsInterstitialAdLoaded())
+        if (isInterstitialReady())
         {
-            Yodo1U3dMas.ShowInterstitialAd();
-            SetDelegates();
+            Yodo1U3dInterstitialAd.GetInstance().ShowAd();
+           
         }
         else
         {
@@ -75,19 +123,68 @@ public class Yodo1Ads : MonoBehaviour
     }
 
     // Video ad
+    private void SetupEventCallbacksReward()
+    {
+        Yodo1U3dRewardAd.GetInstance().OnAdLoadedEvent += OnRewardAdLoadedEvent;
+        Yodo1U3dRewardAd.GetInstance().OnAdLoadFailedEvent += OnRewardAdLoadFailedEvent;
+        Yodo1U3dRewardAd.GetInstance().OnAdOpenedEvent += OnRewardAdOpenedEvent;
+        Yodo1U3dRewardAd.GetInstance().OnAdOpenFailedEvent += OnRewardAdOpenFailedEvent;
+        Yodo1U3dRewardAd.GetInstance().OnAdClosedEvent += OnRewardAdClosedEvent;
+        Yodo1U3dRewardAd.GetInstance().OnAdEarnedEvent += OnRewardAdEarnedEvent;
+    }
 
+    private void LoadRewardAd()
+    {
+        Yodo1U3dRewardAd.GetInstance().LoadAd();
+    }
+
+    private void OnRewardAdLoadedEvent(Yodo1U3dRewardAd ad)
+    {
+        // Code to be executed when an ad finishes loading.
+        retryAttempt = 0;
+        Yodo1U3dRewardAd.GetInstance().ShowAd();
+    }
+
+    private void OnRewardAdLoadFailedEvent(Yodo1U3dRewardAd ad, Yodo1U3dAdError adError)
+    {
+        // Code to be executed when an ad request fails.
+        retryAttempt++;
+        double retryDelay = Math.Pow(2, Math.Min(6, retryAttempt));
+        Invoke("LoadRewardAd", (float)retryDelay);
+    }
+
+    private void OnRewardAdOpenedEvent(Yodo1U3dRewardAd ad)
+    {
+        // Code to be executed when an ad opened
+    }
+
+    private void OnRewardAdOpenFailedEvent(Yodo1U3dRewardAd ad, Yodo1U3dAdError adError)
+    {
+        // Code to be executed when an ad open fails.
+        LoadRewardAd();
+    }
+
+    private void OnRewardAdClosedEvent(Yodo1U3dRewardAd ad)
+    {
+        // Code to be executed when the ad closed
+        LoadRewardAd();
+    }
+
+    private void OnRewardAdEarnedEvent(Yodo1U3dRewardAd ad)
+    {
+        // Code executed when getting rewards
+    }
     public bool isRewardedReady()
     {
-        bool isLoaded = Yodo1U3dMas.IsRewardedAdLoaded();
+        bool isLoaded = Yodo1U3dRewardAd.GetInstance().IsLoaded();
         return isLoaded;
     }
 
     public void showRewardedAd()
     {
-        if (Yodo1U3dMas.IsRewardedAdLoaded())
+        if (isRewardedReady())
         {
-            Yodo1U3dMas.ShowRewardedAd();
-            SetDelegates();
+            Yodo1U3dRewardAd.GetInstance().ShowAd();
         }
         else
         {
@@ -136,99 +233,8 @@ public class Yodo1Ads : MonoBehaviour
 
 
     // callbacks
-    private void SetDelegates()
-    {
-        Yodo1U3dMas.SetInitializeDelegate((bool success, Yodo1U3dAdError error) =>
-        {
-            Debug.Log("[Yodo1 Mas] InitializeDelegate, success:" + success + ", error: \n" + error.ToString());
-
-            if (success)
-            {
-                StartCoroutine(BannerCoroutine());
-            }
-            else
-            {
-
-            }
-        });
-
-        Yodo1U3dMas.SetBannerAdDelegate((Yodo1U3dAdEvent adEvent, Yodo1U3dAdError error) =>
-        {
-            Debug.Log("[Yodo1 Mas] BannerdDelegate:" + adEvent.ToString() + "\n" + error.ToString());
-            switch (adEvent)
-            {
-                case Yodo1U3dAdEvent.AdClosed:
-                    Debug.Log("[Yodo1 Mas] Banner ad has been closed.");
-
-                    break;
-                case Yodo1U3dAdEvent.AdOpened:
-                    Debug.Log("[Yodo1 Mas] Banner ad has been shown.");
-                    break;
-                case Yodo1U3dAdEvent.AdError:
-                    Debug.Log("[Yodo1 Mas] Banner ad error, " + error.ToString());
-                    break;
-            }
-        });
-
-        Yodo1U3dMas.SetInterstitialAdDelegate((Yodo1U3dAdEvent adEvent, Yodo1U3dAdError error) =>
-        {
-            Debug.Log("[Yodo1 Mas] InterstitialAdDelegate:" + adEvent.ToString() + "\n" + error.ToString());
-            switch (adEvent)
-            {
-                case Yodo1U3dAdEvent.AdClosed:
-                    Debug.Log("[Yodo1 Mas] Interstital ad has been closed.");
-                    break;
-                case Yodo1U3dAdEvent.AdOpened:
-                    Debug.Log("[Yodo1 Mas] Interstital ad has been shown.");
-                    break;
-                case Yodo1U3dAdEvent.AdError:
-                    Debug.Log("[Yodo1 Mas] Interstital ad error, " + error.ToString());
-                    break;
-            }
-
-        });
-
-        Yodo1U3dMas.SetRewardedAdDelegate((Yodo1U3dAdEvent adEvent, Yodo1U3dAdError error) =>
-        {
-            Debug.Log("[Yodo1 Mas] RewardVideoDelegate:" + adEvent.ToString() + "\n" + error.ToString());
-            switch (adEvent)
-            {
-                case Yodo1U3dAdEvent.AdClosed:
-                    Debug.Log("[Yodo1 Mas] Reward video ad has been closed.");
-                    break;
-                case Yodo1U3dAdEvent.AdOpened:
-                    Debug.Log("[Yodo1 Mas] Reward video ad has shown successful.");
-                    break;
-                case Yodo1U3dAdEvent.AdError:
-                    Debug.Log("[Yodo1 Mas] Reward video ad error, " + error);
-                    break;
-                case Yodo1U3dAdEvent.AdReward:
-                    Debug.Log("[Yodo1 Mas] Reward video ad reward, give rewards to the player.");
-                    Debug.Log("Rewarded video ad has been played finish, give rewards to the player.");
-                    Reward();
-                    break;
-            }
-
-        });
-    }
-
-    IEnumerator BannerCoroutine()
-    {
-        yield return new WaitForSeconds(2.0f);
-        if (isBannerShown == false)
-        {
-            if (Yodo1U3dMas.IsBannerAdLoaded())
-            {
-                Yodo1U3dMas.ShowBannerAd();
-                isBannerShown = true;
-            }
-            else
-            {
-                StartCoroutine(BannerCoroutine());
-            }
-        }
-
-    }
+    
+   
 }
 
 

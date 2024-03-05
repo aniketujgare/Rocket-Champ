@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
-
-
+using Unity.Services.Core;
+using Unity.Services.Core.Environments;
 public class IAPManager : MonoBehaviour, IStoreListener
 {
     public static IAPManager instance;
@@ -180,13 +181,26 @@ public class IAPManager : MonoBehaviour, IStoreListener
     }
 
 
-    public void OnInitializeFailed(InitializationFailureReason error)
+    public void OnInitializeFailed(InitializationFailureReason error, string? message = null)
     {
-        Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
+        var errorMessage = $"Purchasing failed to initialize. Reason: {error}.";
+
+        if (message != null)
+        {
+            errorMessage += $" More details: {message}";
+        }
+
+        Debug.Log(errorMessage);
     }
 
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
         Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
+    }
+
+    public void OnInitializeFailed(InitializationFailureReason error)
+    {
+        Debug.Log(error);
+        throw new NotImplementedException();
     }
 }
